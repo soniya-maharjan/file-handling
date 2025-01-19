@@ -43,24 +43,27 @@ export class BrandController {
     let tempImagePath = "";
     try {
       tempImagePath = req.body.image;
-      console.log(tempImagePath)
-      const imgPath = await processImageForBrand(req.body.image, req.body?.resize || "", req.body?.type || "");
+      const imgPath = await processImageForBrand(
+        req.body.image,
+        req.body?.resize || "",
+        req.body?.type || ""
+      );
       req.body.image = imgPath;
-      console.log(imgPath)
       const brand = await BrandModel.create(req.body);
-      console.log(brand)
       return res
         .status(201)
         .json({ status: true, message: "Brand created successfully", brand });
     } catch (error: any) {
       //revert image back to temp folder if error occurs in creating brand
-      revertFolder(tempImagePath, req.body?.resize || "", req.body?.type || "")
+      revertFolder(tempImagePath, req.body?.resize || "", req.body?.type || "");
       return res.status(500).json({ sucess: false, message: error.message });
     }
   }
 
   public async update(req: Request, res: Response): Promise<Response> {
+    let resize = "";
     try {
+      const imgPath = req.body?.image;
       const brand: IBrandResponse | null = await BrandModel.findById(
         req.params.id
       );
@@ -70,8 +73,13 @@ export class BrandController {
           .json({ success: false, message: "Brand not found" });
       }
 
-      if (req.file) {
-        const imagePath = path.join("uploads", brand.image);
+      resize = brand.image.endsWith("_md.webp") ? "true" : "false";
+
+      if (imgPath) {
+        const newImgPath = await processImageForBrand(imgPath, resize, "brand");
+
+        const imagePath = path.join(brand.image);
+
         if (fs.existsSync(imagePath)) {
           fs.unlinkSync(imagePath);
         }
@@ -80,7 +88,7 @@ export class BrandController {
           if (fs.existsSync(originalImagePath))
             fs.unlinkSync(originalImagePath);
         }
-        req.body.image = req.file.path;
+        req.body.image = newImgPath;
       }
 
       const updatedBrand = await BrandModel.findByIdAndUpdate(
@@ -89,6 +97,7 @@ export class BrandController {
         { new: true }
       );
       if (!updatedBrand) {
+        revertFolder(req.body?.image, resize, "brand");  
         return res
           .status(404)
           .json({ status: false, message: "Brand not found." });
