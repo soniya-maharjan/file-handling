@@ -27,7 +27,7 @@ export const autoDelete = () => {
     //delete these oldFiles from the server
     oldFiles.forEach((file) => {
       if (fs.existsSync(`temp/${file}`)) {
-        console.log("file exists")
+        // console.log("file exists")
         fs.unlinkSync(`temp/${file}`)
       }
     });

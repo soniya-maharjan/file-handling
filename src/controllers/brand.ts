@@ -43,9 +43,12 @@ export class BrandController {
     let tempImagePath = "";
     try {
       tempImagePath = req.body.image;
+      console.log(tempImagePath)
       const imgPath = await processImageForBrand(req.body.image, req.body?.resize || "", req.body?.type || "");
       req.body.image = imgPath;
+      console.log(imgPath)
       const brand = await BrandModel.create(req.body);
+      console.log(brand)
       return res
         .status(201)
         .json({ status: true, message: "Brand created successfully", brand });

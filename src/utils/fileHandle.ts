@@ -9,12 +9,12 @@ export const processImageForBrand = async (
 ) => {
   const resizeFlag = resize === "true";
   const filename = path.basename(tempImagePath, path.extname(tempImagePath)); // Get the base filename
-  const uploadDir = path.join("uploads", type || "");
+  const uploadDir = path.join("./uploads", type || "");
   const resizedImagePath = path.join(uploadDir, `${filename}_md.webp`);
   const originalImagePath = path.join(uploadDir, `${filename}.webp`);
 
-  if(!fs.existsSync(uploadDir)){
-    fs.mkdirSync(uploadDir)
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
   }
 
   sharp.cache(false);
@@ -31,10 +31,14 @@ export const processImageForBrand = async (
   // Clean up the temp file
   fs.unlinkSync(tempImagePath);
 
-  return (resize === "true" ? resizedImagePath : originalImagePath)
+  return resize === "true" ? resizedImagePath : originalImagePath;
 };
 
-export const revertFolder = async (tempImagePath: string, resize: string, type: string) => {
+export const revertFolder = async (
+  tempImagePath: string,
+  resize: string,
+  type: string
+) => {
   const resizeFlag = resize === "true";
   const filename = path.basename(tempImagePath, path.extname(tempImagePath));
   const ext = path.extname(tempImagePath);
@@ -46,10 +50,13 @@ export const revertFolder = async (tempImagePath: string, resize: string, type: 
 
   // Convert the .webp image back to its original format (from webp to the original format)
   await sharp(path.join("uploads", type, `${filename}.webp`))
-    .toFormat(ext.slice(1) as keyof sharp.FormatEnum | sharp.AvailableFormatInfo) // Get the original extension without the dot
-    .toFile(tempImagePath); 
+    .toFormat(
+      ext.slice(1) as keyof sharp.FormatEnum | sharp.AvailableFormatInfo
+    ) // Get the original extension without the dot
+    .toFile(tempImagePath);
 
   // Remove the original .webp file
-  fs.unlinkSync(path.join("uploads", type, `${filename}.webp`));
+  if (fs.existsSync(path.join("uploads", type, `${filename}.webp`))) {
+    fs.unlinkSync(path.join("uploads", type, `${filename}.webp`));
+  }
 };
-
