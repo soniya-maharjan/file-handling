@@ -25,11 +25,14 @@ export const autoDelete = () => {
     const oldFiles = tempFiles.slice(0, left);
 
     //delete these oldFiles from the server
-    oldFiles.forEach((file) => {
+    Promise.all(oldFiles.map((file) => {
       if (fs.existsSync(`temp/${file}`)) {
-        // console.log("file exists")
-        fs.unlinkSync(`temp/${file}`)
+        return fs.promises.unlink(`temp/${file}`);
       }
+    })).then(() => {
+      console.log("Old files deleted successfully");
+    }).catch((err) => {
+      console.error("Error deleting files", err);
     });
 
     return;
