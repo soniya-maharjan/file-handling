@@ -1,0 +1,155 @@
+{
+	"info": {
+		"_postman_id": "c14b6c72-656e-4fd4-a418-843a551bd3ab",
+		"name": "FILE HANDLING",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37044224"
+	},
+	"item": [
+		{
+			"name": "BRAND",
+			"item": [
+				{
+					"name": "CREATE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Alfa Romeo\",\r\n    \"image\": \"temp\\\\1737249264310-angry.jpeg\",\r\n    \"resize\": \"true\",\r\n    \"type\": \"brand\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/brand",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"brand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/brand",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"brand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/brand/678be5166883e2055f0a5a4b",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"brand",
+								"678be5166883e2055f0a5a4b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"image\": \"temp\\\\1737249905210-12311.jpg\",\r\n    \"name\": \"Alfa Romeo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/brand/678c5280015779e2bb30acb0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"brand",
+								"678c5280015779e2bb30acb0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UPLOAD",
+			"item": [
+				{
+					"name": "IMAGE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/HP/OneDrive/Pictures/alfa-romeo.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/upload",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
